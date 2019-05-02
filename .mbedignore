@@ -1,0 +1,6 @@
+#exclude hardfp libs
+GUI/Libs/hardfp/*
+
+#exclude Sample folder from the build
+Sample/*
+

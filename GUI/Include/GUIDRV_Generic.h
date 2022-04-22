@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -63,6 +65,7 @@ Purpose     : Adapter to be able to use the display drivers with simple
 #define LCD_VYSIZE      _vySize
 #define LCD_XSIZE_PHYS  _xSizePhys
 #define LCD_YSIZE_PHYS  _ySizePhys
+#define LCD_NUM_COLORS  _NumColors
 
 /*********************************************************************
 *
@@ -70,6 +73,14 @@ Purpose     : Adapter to be able to use the display drivers with simple
 */
 #define LCD_On  LCD_L0_On
 #define LCD_Off LCD_L0_Off
+
+/*********************************************************************
+*
+*       Map undefined optional functions to dummy routines
+*/
+#ifndef   LCD_L0_GetDevData
+  #define LCD_L0_GetDevData __GetDevDataDummy
+#endif
 
 /*********************************************************************
 *
@@ -88,6 +99,9 @@ void           LCD_L0_Off          (void);
 int            LCD_L0_Init         (void);
 void           LCD_L0_SetLUTEntry  (U8 Pos, LCD_COLOR Color);
 void        (* LCD_L0_GetDevFunc   (int Index))(void);
+static void  * LCD_L0_GetDevData   (GUI_DEVICE * pDevice, int Index);
+int            LCD_L0_ControlCache (int Cmd);
+void           LCD_L0_Refresh      (void);
 
 /*********************************************************************
 *
@@ -107,6 +121,7 @@ static int _vxSize;
 static int _vySize;
 static int _xSizePhys;
 static int _ySizePhys;
+static int _NumColors;
 
 /*********************************************************************
 *
@@ -114,6 +129,16 @@ static int _ySizePhys;
 *
 **********************************************************************
 */
+/*********************************************************************
+*
+*       __GetDevDataDummy
+*/
+static void * __GetDevDataDummy(GUI_DEVICE * pDevice, int Index) {
+  GUI_USE_PARA(pDevice);
+  GUI_USE_PARA(Index);
+  return NULL;
+}
+
 /*********************************************************************
 *
 *       __SetPixelIndex
@@ -365,23 +390,22 @@ static I32 __GetDevProp(GUI_DEVICE * pDevice, int Index) {
 */
 static void * __GetDevData(GUI_DEVICE * pDevice, int Index) {
   GUI_USE_PARA(pDevice);
+  switch (Index) {
   #if GUI_SUPPORT_MEMDEV
-    switch (Index) {
-    case LCD_DEVDATA_MEMDEV:
-      #if (LCD_BITSPERPIXEL == 1)
-        return (void *)&GUI_MEMDEV_DEVICE_1;
-      #elif (LCD_BITSPERPIXEL <= 8)
-        return (void *)&GUI_MEMDEV_DEVICE_8;
-      #elif (LCD_BITSPERPIXEL <= 16)
-        return (void *)&GUI_MEMDEV_DEVICE_16;
-      #else
-        return (void *)&GUI_MEMDEV_DEVICE_32;
-      #endif
-    }
-  #else
-    GUI_USE_PARA(Index);
+  case LCD_DEVDATA_MEMDEV:
+    #if (LCD_BITSPERPIXEL == 1)
+      return (void *)&GUI_MEMDEV_DEVICE_1;
+    #elif (LCD_BITSPERPIXEL <= 8)
+      return (void *)&GUI_MEMDEV_DEVICE_8;
+    #elif (LCD_BITSPERPIXEL <= 16)
+      return (void *)&GUI_MEMDEV_DEVICE_16;
+    #else
+      return (void *)&GUI_MEMDEV_DEVICE_32;
+    #endif
   #endif
-  return NULL;
+  default:
+    return LCD_L0_GetDevData(pDevice, Index);
+  }
 }
 
 /*********************************************************************

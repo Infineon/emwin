@@ -1,9 +1,10 @@
 var NAVTREEINDEX0 =
 {
-"./../../UM03001_emWin5.pdf":[6],
+"./../../UM03001_emWin.pdf":[5],
 "index.html":[],
+"index.html#group_emwin_appwizard":[2,8],
 "index.html#group_emwin_bitplains_configuration":[2,2],
-"index.html#group_emwin_changelog":[5],
+"index.html#group_emwin_changelog":[4],
 "index.html#group_emwin_compactcolor16_configuration":[2,6],
 "index.html#group_emwin_configuration":[2],
 "index.html#group_emwin_demos":[1,1],
@@ -18,7 +19,6 @@ var NAVTREEINDEX0 =
 "index.html#group_emwin_spage_configuration":[2,5],
 "index.html#group_emwin_template_configuration":[2,7],
 "index.html#section_emwin_general":[0],
-"index.html#section_emwin_known_issues":[4],
 "index.html#section_emwin_toolchain":[3],
 "pages.html":[]
 };

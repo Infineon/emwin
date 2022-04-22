@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -639,6 +641,16 @@ GUI_CONST_STORAGE GUI_BITMAP bmSeggerLogo_100x50 = {
 /*********************************************************************
 *
 *       CSV-file in binary format containing the text resources
+*
+*  Contents of the CSV file:
+*    "Colors...","Farben...","Colori.."
+*    "Help...","Hilfe...","Assistenza..."
+*    "Exit","Beenden","Finire"
+*    "Connect","Verbinden","Conettere"
+*    "English","Englisch","Inglese"
+*    "German","Deutsch","Tedesco"
+*    "Italian","Italienisch","Italiano"
+*    "Settings","Einstellungen","Impostazione"
 */
 static const U8 _acCSV[277UL + 1] = {
   0x22, 0x43, 0x6F, 0x6C, 0x6F, 0x72, 0x73, 0x2E, 0x2E, 0x2E, 0x22, 0x2C, 0x22, 0x46, 0x61, 0x72, 0x62, 0x65, 0x6E, 0x2E, 0x2E, 0x2E, 0x22, 0x2C, 0x22, 0x43, 0x6F, 0x6C, 0x6F, 0x72, 0x69, 0x2E, 0x2E, 0x22, 0x0D, 0x0A, 0x22, 0x48, 0x65, 0x6C,
@@ -718,6 +730,9 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     Language = GUI_LANG_GetLang();
     hItem = WM_GetDialogItem(pMsg->hWin, ID_RADIO_0);    
     RADIO_SetValue(hItem, Language);
+    //lint -fallthrough // No break here.
+    // Avoid GCC warning '-Wimplicit-fallthrough':
+    // fall through
   //
   // React on APP_SETLANG - message
   //

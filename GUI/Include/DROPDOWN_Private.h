@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,6 +47,7 @@ Purpose     : DROPDOWN private header file
 #ifndef DROPDOWN_PRIVATE_H
 #define DROPDOWN_PRIVATE_H
 
+#include "WM_Intern.h"
 #include "DROPDOWN.h"
 #include "WIDGET.h"
 #include "GUI_ARRAY.h"
@@ -58,6 +61,7 @@ Purpose     : DROPDOWN private header file
 **********************************************************************
 */
 #define DROPDOWN_SF_AUTOSCROLLBAR DROPDOWN_CF_AUTOSCROLLBAR
+#define DROPDOWN_SF_MOTION        DROPDOWN_CF_MOTION
 
 /*********************************************************************
 *
@@ -81,20 +85,21 @@ typedef struct {
 } DROPDOWN_PROPS;
 
 typedef struct {
-  WIDGET  Widget;
-  I16     Sel;        // Current selection
-  I16     ySizeLB;    // ySize of assigned LISTBOX in expanded state
-  I16     TextHeight;
-  GUI_ARRAY Handles;
-  WM_SCROLL_STATE ScrollState;
-  DROPDOWN_PROPS Props;
+  WIDGET              Widget;
+  I16                 Sel;        // Current selection
+  I16                 ySizeLB;    // ySize of assigned LISTBOX in expanded state
+  I16                 TextHeight;
+  GUI_ARRAY           Handles;
+  WM_SCROLL_STATE     ScrollState;
+  DROPDOWN_PROPS      Props;
   WIDGET_SKIN const * pWidgetSkin;
-  WM_HWIN hListWin;
-  U8      Flags;
-  U16     ItemSpacing;
-  U8      ScrollbarWidth;
-  char  IsPressed;
-  WM_HMEM hDisabled;
+  WM_HWIN             hListWin;
+  U8                  Flags;
+  U16                 ItemSpacing;
+  U8                  ScrollbarWidth;
+  char                IsPressed;
+  WM_HMEM             hDisabled;
+  int                 LastMotionPosY;
 } DROPDOWN_Obj;
 
 /*********************************************************************
@@ -113,7 +118,7 @@ typedef struct {
   DROPDOWN_Obj * DROPDOWN_LockH(DROPDOWN_Handle h);
   #define DROPDOWN_LOCK_H(h)   DROPDOWN_LockH(h)
 #else
-  #define DROPDOWN_LOCK_H(h)   (DROPDOWN_Obj *)GUI_LOCK_H(h)
+  #define DROPDOWN_LOCK_H(h)   (DROPDOWN_Obj *)WM_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -137,9 +142,12 @@ extern WIDGET_SKIN const * DROPDOWN__pSkinDefault;
 **********************************************************************
 */
 
-void DROPDOWN__AdjustHeight(DROPDOWN_Handle hObj);
-int  DROPDOWN__GetNumItems (DROPDOWN_Obj * pObj);
-const char * DROPDOWN__GetpItemLocked(DROPDOWN_Handle hObj, int Index);
+void         DROPDOWN__AdjustHeight          (DROPDOWN_Handle hObj);
+int          DROPDOWN__GetNumItems           (DROPDOWN_Obj * pObj);
+void         DROPDOWN__Expand                (DROPDOWN_Handle hObj);
+const char * DROPDOWN__GetpItemLocked        (DROPDOWN_Handle hObj, unsigned int Index);
+void         DROPDOWN__RegisterPostExpandHook(GUI_REGISTER_HOOK * pRegisterHook);
+void         DROPDOWN__RegisterPreExpandHook (GUI_REGISTER_HOOK * pRegisterHook);
 
 #endif // GUI_WINSUPPORT
 #endif // DROPDOWN_PRIVATE_H

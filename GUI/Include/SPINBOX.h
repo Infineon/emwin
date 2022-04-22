@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,9 +48,8 @@ Purpose     : SPINBOX header file
 #define SPINBOX_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h" // Required for Create indirect data structure
+#include "DIALOG_Type.h" // Required for Create indirect data structure
 #include "WIDGET.h"
-#include "GUI_Debug.h"
 #include "EDIT.h"
 
 #if GUI_WINSUPPORT
@@ -88,6 +89,16 @@ Purpose     : SPINBOX header file
 #define SPINBOX_CI_DISABLED          EDIT_CI_DISABLED
 #define SPINBOX_CI_ENABLED           EDIT_CI_ENABLED
 #define SPINBOX_CI_PRESSED           2
+
+/*********************************************************************
+*
+*       SPINBOX timer indexes
+*
+*  Description
+*    Timer indexes used by the routine SPINBOX_SetTimerPeriod().
+*/
+#define SPINBOX_TI_TIMERSTART       0      // Time it takes to start auto increase/decrease of its value.
+#define SPINBOX_TI_TIMERINC         1      // Time between two increments/decrements.
 
 /*********************************************************************
 *
@@ -148,7 +159,9 @@ GUI_COLOR        SPINBOX_GetBkColor      (SPINBOX_Handle hObj, unsigned int Inde
 GUI_COLOR        SPINBOX_GetButtonBkColor(SPINBOX_Handle hObj, unsigned int Index);
 EDIT_Handle      SPINBOX_GetEditHandle   (SPINBOX_Handle hObj);
 const GUI_FONT * SPINBOX_GetFont         (SPINBOX_Handle hObj);
+void             SPINBOX_GetRange        (SPINBOX_Handle hObj, I32 * pMin, I32 * pMax);
 GUI_COLOR        SPINBOX_GetTextColor    (SPINBOX_Handle hObj, unsigned int Index);
+U32              SPINBOX_GetTimerPeriod  (SPINBOX_Handle hObj, U32 Index);
 int              SPINBOX_GetUserData     (SPINBOX_Handle hObj, void * pDest, int NumBytes);
 I32              SPINBOX_GetValue        (SPINBOX_Handle hObj);
 void             SPINBOX_SetBkColor      (SPINBOX_Handle hObj, unsigned int Index, GUI_COLOR Color);
@@ -160,6 +173,7 @@ void             SPINBOX_SetFont         (SPINBOX_Handle hObj, const GUI_FONT * 
 void             SPINBOX_SetRange        (SPINBOX_Handle hObj, I32 Min, I32 Max);
 U16              SPINBOX_SetStep         (SPINBOX_Handle hObj, U16 Step);
 void             SPINBOX_SetTextColor    (SPINBOX_Handle hObj, unsigned int Index, GUI_COLOR Color);
+void             SPINBOX_SetTimerPeriod  (SPINBOX_Handle hObj, U32 Index, U32 Period);
 int              SPINBOX_SetUserData     (SPINBOX_Handle hObj, const void * pSrc, int NumBytes);
 void             SPINBOX_SetValue        (SPINBOX_Handle hObj, I32 Value);
 

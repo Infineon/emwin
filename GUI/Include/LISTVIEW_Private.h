@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,7 +47,8 @@ Purpose     : Private LISTVIEW include
 #ifndef LISTVIEW_PRIVATE_H
 #define LISTVIEW_PRIVATE_H
 
-#include "WM.h"
+#include "GUI_Private.h"
+#include "WM_Intern.h"
 
 #if GUI_WINSUPPORT
 
@@ -128,6 +131,9 @@ struct LISTVIEW_Obj {
   int                          SelCol;
   int                          ShowGrid;
   int                          SortIndex;                                         // Column for sorting
+  int                          MotionPosX;
+  int                          MotionPosY;
+  int                          MotionPosOldY;
   unsigned                     RowDistY;
   unsigned                     LBorder;
   unsigned                     RBorder;
@@ -139,6 +145,8 @@ struct LISTVIEW_Obj {
   U8                           IsPresorted;
   U8                           ReverseSort;                                       // Set to 1 if reverse sorting is required
   U8                           Flags;
+  U8                           MotionStarted;                                     // Internal flag to check if motion swiping has been started
+  U8                           xOff, yOff;                                        // Internal offsets required for AppWizard
 };
 
 /*********************************************************************
@@ -157,7 +165,7 @@ struct LISTVIEW_Obj {
   LISTVIEW_Obj * LISTVIEW_LockH(LISTVIEW_Handle h);
   #define LISTVIEW_LOCK_H(h)   LISTVIEW_LockH(h)
 #else
-  #define LISTVIEW_LOCK_H(h)   (LISTVIEW_Obj *)GUI_LOCK_H(h)
+  #define LISTVIEW_LOCK_H(h)   (LISTVIEW_Obj *)WM_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -177,6 +185,7 @@ extern LISTVIEW_PROPS LISTVIEW_DefaultProps;
 LISTVIEW_CELL_INFO * LISTVIEW__CreateCellInfoLocked (LISTVIEW_Handle   hObj, unsigned Column, unsigned Row);
 unsigned             LISTVIEW__GetNumColumns        (LISTVIEW_Obj    * pObj);
 unsigned             LISTVIEW__GetNumRows           (LISTVIEW_Obj    * pObj);
+unsigned             LISTVIEW__GetNumVisibleRows    (LISTVIEW_Handle hObj, LISTVIEW_Obj * pObj);
 LISTVIEW_CELL_INFO * LISTVIEW__GetpCellInfo         (LISTVIEW_Handle   hObj, unsigned Column, unsigned Row);
 LISTVIEW_ROW       * LISTVIEW__GetpRow              (LISTVIEW_Handle   hObj, int Row);
 unsigned             LISTVIEW__GetRowDistY          (LISTVIEW_Obj    * pObj);
@@ -184,7 +193,8 @@ unsigned             LISTVIEW__GetRowSorted         (LISTVIEW_Handle   hObj, int
 void                 LISTVIEW__InvalidateInsideArea (LISTVIEW_Handle   hObj);
 void                 LISTVIEW__InvalidateRow        (LISTVIEW_Handle   hObj, int Sel);
 void                 LISTVIEW__InvalidateRowAndBelow(LISTVIEW_Handle   hObj, int Sel);
-void                 LISTVIEW__SetSel               (LISTVIEW_Handle   hObj, int NewSel);
+void                 LISTVIEW__SetOffset            (LISTVIEW_Handle   hObj, U8 xOff, U8 yOff);
+void                 LISTVIEW__SetSel               (LISTVIEW_Handle   hObj, int NewSel, int CheckPos);
 void                 LISTVIEW__SetSelCol            (LISTVIEW_Handle   hObj, int NewSelCol);
 int                  LISTVIEW__UpdateScrollParas    (LISTVIEW_Handle   hObj);
 

@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,7 +48,7 @@ Purpose     : BUTTON public header file (API)
 #define BUTTON_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -66,19 +68,25 @@ Purpose     : BUTTON public header file (API)
 
 /*********************************************************************
 *
-*       Color indices
+*       BUTTON color indexes
+*
+*  Description
+*    Color indexes for BUTTON widget.
 */
-#define BUTTON_CI_UNPRESSED 0
-#define BUTTON_CI_PRESSED   1
-#define BUTTON_CI_DISABLED  2
+#define BUTTON_CI_UNPRESSED 0    // Color for disabled state.
+#define BUTTON_CI_PRESSED   1    // Color for pressed state.
+#define BUTTON_CI_DISABLED  2    // Color for unpressed state.
 
 /*********************************************************************
 *
-*       Bitmap indices
+*       BUTTON bitmap indexes
+*
+*  Description
+*    Bitmap indexes for BUTTON widget.
 */
-#define BUTTON_BI_UNPRESSED 0
-#define BUTTON_BI_PRESSED   1
-#define BUTTON_BI_DISABLED  2
+#define BUTTON_BI_UNPRESSED 0    // Bitmap for disabled state.
+#define BUTTON_BI_PRESSED   1    // Bitmap for pressed state.
+#define BUTTON_BI_DISABLED  2    // Bitmap for unpressed state.
 
 /*********************************************************************
 *
@@ -86,6 +94,8 @@ Purpose     : BUTTON public header file (API)
 */
 #define BUTTON_STATE_FOCUS      WIDGET_STATE_FOCUS
 #define BUTTON_STATE_PRESSED    WIDGET_STATE_USER0
+#define BUTTON_STATE_TOGGLEMODE WIDGET_STATE_USER1
+#define BUTTON_STATE_TOGGLED    WIDGET_STATE_USER2
 
 /*********************************************************************
 *
@@ -184,11 +194,13 @@ int                BUTTON_SetText            (BUTTON_Handle hObj, const char* s)
 void               BUTTON_SetTextAlign       (BUTTON_Handle hObj, int Align);
 void               BUTTON_SetTextColor       (BUTTON_Handle hObj, unsigned int Index, GUI_COLOR Color);
 void               BUTTON_SetTextOffset      (BUTTON_Handle hObj, int xPos, int yPos);
+void               BUTTON_SetToggleMode      (BUTTON_Handle hObj, int OnOff);
 void               BUTTON_SetSelfDrawEx      (BUTTON_Handle hObj, unsigned int Index, GUI_DRAW_SELF_CB * pDraw, int x, int y); /* Not to be doc. */
 void               BUTTON_SetSelfDraw        (BUTTON_Handle hObj, unsigned int Index, GUI_DRAW_SELF_CB * pDraw);               /* Not to be doc. */
 void               BUTTON_SetReactOnLevel    (void);
 void               BUTTON_SetReactOnTouch    (void);
 int                BUTTON_SetUserData        (BUTTON_Handle hObj, const void * pSrc, int NumBytes);
+int                BUTTON_Toggle             (BUTTON_Handle hObj);
 
 #define BUTTON_SetFocussable BUTTON_SetFocusable
 #define BUTTON_SetFocusable  WIDGET_SetFocusable

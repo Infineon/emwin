@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,7 +48,7 @@ Purpose     : GRAPH include
 #define GRAPH_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -61,30 +63,65 @@ Purpose     : GRAPH include
 *
 **********************************************************************
 */
-#define GRAPH_CI_BK                  0
-#define GRAPH_CI_BORDER              1
-#define GRAPH_CI_FRAME               2
-#define GRAPH_CI_GRID                3
+/*********************************************************************
+*
+*       GRAPH color indexes
+*
+*  Description
+*    Color indexes used by the GRAPH widget.
+*/
+#define GRAPH_CI_BK                  0           // Background color.
+#define GRAPH_CI_BORDER              1           // Color of the border area.
+#define GRAPH_CI_FRAME               2           // Color of the thin frame line.
+#define GRAPH_CI_GRID                3           // Color of the grid.
 
-#define GRAPH_SCALE_CF_HORIZONTAL    (0 << 0)
-#define GRAPH_SCALE_CF_VERTICAL      (1 << 0)
+/*********************************************************************
+*
+*       SCALE create flags
+*
+*  Description
+*    Create flags used for scale objects.
+*/
+#define GRAPH_SCALE_CF_HORIZONTAL    (0 << 0)    // Creates a horizontal scale object.
+#define GRAPH_SCALE_CF_VERTICAL      (1 << 0)    // Creates a vertical scale object.
 
+/* status flags */
 #define GRAPH_SCALE_SF_HORIZONTAL    GRAPH_SCALE_CF_HORIZONTAL
 #define GRAPH_SCALE_SF_VERTICAL      GRAPH_SCALE_CF_VERTICAL
 
-#define GRAPH_DRAW_FIRST             0
-#define GRAPH_DRAW_AFTER_BORDER      1
-#define GRAPH_DRAW_LAST              2
+/*********************************************************************
+*
+*       GRAPH user draw stages
+*
+*  Description
+*    Stages sent to a user draw routine with the \a{Stage} parameter.
+*    For more information, refer to GRAPH_SetUserDraw().
+*/
+#define GRAPH_DRAW_FIRST             0           // Gives the application the possibility to perform drawing operations at the beginning of the drawing process.
+#define GRAPH_DRAW_AFTER_BORDER      1           // Gives the application the possibility to perform drawing operations after the border was drawn.
+#define GRAPH_DRAW_LAST              2           // Performs final drawing operations.
 
-#define GRAPH_ALIGN_RIGHT            (0 << 0)
-#define GRAPH_ALIGN_LEFT             (1 << 0)
+/*********************************************************************
+*
+*       GRAPH alignment flags
+*
+*  Description
+*    Flags that define the alignment of the date of a graph.
+*/
+#define GRAPH_ALIGN_RIGHT            (0 << 0)    // The data is aligned at the right edge (default).
+#define GRAPH_ALIGN_LEFT             (1 << 0)    // The data is aligned at the left edge.
 
-//
-// Creation flags (ExFlags)
-//
-#define GRAPH_CF_GRID_FIXED_X        (1 << 0)
-#define GRAPH_CF_AVOID_SCROLLBAR_H   (1 << 1)
-#define GRAPH_CF_AVOID_SCROLLBAR_V   (1 << 2)
+/*********************************************************************
+*
+*       GRAPH create flags
+*
+*  Description
+*    Create flags used for GRAPH objects.
+*/
+#define GRAPH_CF_GRID_FIXED_X        (1 << 0)    // This flag 'fixes' the grid in X-axis. That means if horizontal scrolling is used, the grid remains in its position.
+#define GRAPH_CF_AVOID_SCROLLBAR_H   (1 << 1)    // Automatic use of a horizontal scrollbar is disabled. (Default).
+#define GRAPH_CF_AVOID_SCROLLBAR_V   (1 << 2)    // Automatic use of a vertical scrollbar is disabled. (Default).
+/* */
 
 //
 // Status flags
@@ -139,6 +176,7 @@ void      GRAPH_DetachScale            (GRAPH_Handle hObj, GRAPH_SCALE_Handle hS
 GUI_COLOR GRAPH_GetColor               (GRAPH_Handle hObj, unsigned Index);
 I32       GRAPH_GetScrollValue         (GRAPH_Handle hObj, U8 Coord);
 int       GRAPH_GetUserData            (GRAPH_Handle hObj, void * pDest, int NumBytes);
+void      GRAPH_InvertScrollbar        (GRAPH_Handle hObj, U8 Coord);
 void      GRAPH_SetAutoScrollbar       (GRAPH_Handle hObj, U8 Coord, U8 OnOff);
 void      GRAPH_SetBorder              (GRAPH_Handle hObj, unsigned BorderL, unsigned BorderT, unsigned BorderR, unsigned BorderB);
 GUI_COLOR GRAPH_SetColor               (GRAPH_Handle hObj, GUI_COLOR Color, unsigned Index);
@@ -163,6 +201,7 @@ void      GRAPH_DATA_YT_Delete         (GRAPH_DATA_Handle hDataObj);
 int       GRAPH_DATA_YT_GetValue       (GRAPH_DATA_Handle hDataObj, I16 * pValue, U32 Index);
 
 void      GRAPH_DATA_YT_SetAlign       (GRAPH_DATA_Handle hDataObj, int Align);
+GUI_COLOR GRAPH_DATA_YT_SetColor       (GRAPH_DATA_Handle hDataObj, GUI_COLOR Color);
 void      GRAPH_DATA_YT_SetOffY        (GRAPH_DATA_Handle hDataObj, int Off);
 void      GRAPH_DATA_YT_MirrorX        (GRAPH_DATA_Handle hDataObj, int OnOff);
 
@@ -172,6 +211,7 @@ void      GRAPH_DATA_XY_Delete         (GRAPH_DATA_Handle hDataObj);
 unsigned  GRAPH_DATA_XY_GetLineVis     (GRAPH_DATA_Handle hDataObj);
 int       GRAPH_DATA_XY_GetPoint       (GRAPH_DATA_Handle hDataObj, GUI_POINT * pPoint, U32 Index);
 unsigned  GRAPH_DATA_XY_GetPointVis    (GRAPH_DATA_Handle hDataObj);
+GUI_COLOR GRAPH_DATA_XY_SetColor       (GRAPH_DATA_Handle hDataObj, GUI_COLOR Color);
 void      GRAPH_DATA_XY_SetLineStyle   (GRAPH_DATA_Handle hDataObj, U8 LineStyle);
 unsigned  GRAPH_DATA_XY_SetLineVis     (GRAPH_DATA_Handle hDataObj, unsigned OnOff);
 void      GRAPH_DATA_XY_SetOffX        (GRAPH_DATA_Handle hDataObj, int Off);

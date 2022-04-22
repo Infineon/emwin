@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,9 +47,8 @@ Purpose     : Windows manager internal include
 #ifndef WM_INTERN_H            /* Make sure we only include it once */
 #define WM_INTERN_H            /* Make sure we only include it once */
 
-#include "WM.h"
 #include "GUI_Private.h"
-
+#include "WM.h"
 
 #if defined(__cplusplus)
 extern "C" {     /* Make sure we have C-declarations in C++ programs */
@@ -85,7 +86,11 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 
 #define WM_SF_CONST_OUTLINE     WM_CF_CONST_OUTLINE       /* Constant outline.*/
 
-#define WM_H2P(hWin)            ((WM_Obj*)GUI_ALLOC_h2p(hWin))
+#if WM_VALIDATE_HANDLE
+  #define WM_H2P(hWin)            ((WM_Obj*)WM__GetValidPointer(hWin))
+#else
+  #define WM_H2P(hWin)            ((WM_Obj*)GUI_ALLOC_h2p(hWin))
+#endif
 
 
 #if GUI_DEBUG_LEVEL  >= GUI_DEBUG_LEVEL_LOG_WARNINGS
@@ -165,6 +170,8 @@ GUI_EXTERN WM_CRITICAL_HANDLE * WM__pFirstCriticalHandle;
 GUI_EXTERN WM_HWIN   WM__ahDesktopWin[GUI_NUM_LAYERS];
 GUI_EXTERN GUI_COLOR WM__aBkColor[GUI_NUM_LAYERS];
 
+GUI_EXTERN U32 WM__DrawSprite;  // Required when using sprites in combination with the WM.
+
 #undef GUI_EXTERN
 
 /*********************************************************************
@@ -176,6 +183,7 @@ GUI_EXTERN GUI_COLOR WM__aBkColor[GUI_NUM_LAYERS];
 void    WM__ActivateClipRect        (void);
 int     WM__ClipAtParentBorders     (GUI_RECT * pRect, WM_HWIN hWin);
 void    WM__Client2Screen           (const WM_Obj * pWin, GUI_RECT * pRect);
+void    WM__DeactivateEx            (void);
 void    WM__DeleteAssocTimer        (WM_HWIN hWin);
 void    WM__DeleteSecure            (WM_HWIN hWin);
 void    WM__DetachWindow            (WM_HWIN hChild);
@@ -234,6 +242,15 @@ void    WM__SetLastTouched          (WM_HWIN hWin);
   void    WM__InvalidateDrawAndDescs(WM_HWIN hWin);
 #else
   #define WM__InvalidateDrawAndDescs(hWin)
+#endif
+
+/*********************************************************************
+*
+*       Validate WM handles
+*/
+#if WM_VALIDATE_HANDLE
+  void   * WM__GetValidPointer(WM_HWIN hWin);
+  WM_Obj * WM__LockValid      (WM_HWIN hWin);
 #endif
 
 /* Static memory devices */

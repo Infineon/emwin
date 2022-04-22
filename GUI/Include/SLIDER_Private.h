@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,7 +47,7 @@ Purpose     : SLIDER private header file
 #ifndef SLIDER_PRIVATE_H
 #define SLIDER_PRIVATE_H
 
-#include "WM.h"
+#include "WM_Intern.h"
 #include "WIDGET.h"
 #include "SLIDER.h"
 
@@ -60,7 +62,8 @@ Purpose     : SLIDER private header file
 //
 // Flags
 //
-#define SLIDER_FLAG_DRAW_FOCUS_RECT (1 << 0)
+#define SLIDER_FLAG_DRAW_FOCUS_RECT  (1 << 0)
+#define SLIDER_FLAG_INVERT_DIRECTION (1 << 1)
 
 /*********************************************************************
 *
@@ -108,7 +111,7 @@ typedef struct {
   SLIDER_Obj * SLIDER_LockH(SLIDER_Handle h);
   #define SLIDER_LOCK_H(h)  SLIDER_LockH(h)
 #else
-  #define SLIDER_LOCK_H(h)  (SLIDER_Obj *)GUI_LOCK_H(h)
+  #define SLIDER_LOCK_H(h)  (SLIDER_Obj *)WM_LOCK_H(h)
 #endif
 
 #ifndef   SLIDER_SUPPORT_TRANSPARENCY

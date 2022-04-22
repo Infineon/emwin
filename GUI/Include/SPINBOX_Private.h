@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,9 +47,9 @@ Purpose     : Private SPINBOX include
 #ifndef SPINBOX_PRIVATE_H
 #define SPINBOX_PRIVATE_H
 
+#include "WM_Intern.h"
 #include "SPINBOX.h"
 #include "EDIT.h"
-#include "GUI_Private.h"
 
 #if GUI_WINSUPPORT
 
@@ -81,6 +83,8 @@ typedef struct {
   U16                  Step;                 // Value will be increased/decreased by this amount when a button is clicked.
   U16                  ButtonSize;           // Size of the button depending on the orientation.
   U8                   Edge;                 // Buttons reside on the left or right edge of the widget.
+  U32                  PeriodStart;          // Period after auto increment starts (holding button)
+  U32                  PeriodTimer;          // Period between two increments after auto increment starts (holding button)
   SPINBOX_SKIN_PRIVATE SkinPrivate;          // Structure containing a pointer to the used DrawSkin-function.
 } SPINBOX_PROPS;
 
@@ -112,7 +116,7 @@ typedef struct {
   SPINBOX_OBJ * SPINBOX_LockH(SPINBOX_Handle h);
   #define SPINBOX_LOCK_H(h)   SPINBOX_LockH(h)
 #else
-  #define SPINBOX_LOCK_H(h)   (SPINBOX_OBJ *)GUI_LOCK_H(h)
+  #define SPINBOX_LOCK_H(h)   (SPINBOX_OBJ *)WM_LOCK_H(h)
 #endif
 
 #define SPINBOX_BUTTON_NONE     -1

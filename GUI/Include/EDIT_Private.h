@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -49,6 +51,7 @@ Purpose     : Internal header file
 
 #if GUI_WINSUPPORT
 
+#include "WM_Intern.h"
 #include "WIDGET.h"
 
 /*********************************************************************
@@ -92,12 +95,15 @@ struct EDIT_Obj_struct {
   U8                   EditMode;        // Insert or overwrite mode
   U8                   XSizeCursor;     // Size of cursor when working in insert mode
   U8                   Flags;
+  U8                   Radius;          // Currently only used by AppWizard
   tEDIT_AddKeyEx     * pfAddKeyEx;      // Handle key input
   tEDIT_UpdateBuffer * pfUpdateBuffer;  // Update textbuffer
   EDIT_PROPS           Props;
   WM_HTIMER            hTimer;
   U8                   MinMaxMode;
   int                  TimerPeriod;
+  int                  ScrollPos;       // Horizontal scrolling position
+  U16                  PrevStrLen;      // Previous string length, used for scrolling position calculation.
 };
 
 /*********************************************************************
@@ -116,7 +122,7 @@ struct EDIT_Obj_struct {
   EDIT_Obj * EDIT_LockH(EDIT_Handle h);
   #define EDIT_LOCK_H(h)   EDIT_LockH(h)
 #else
-  #define EDIT_LOCK_H(h)   (EDIT_Obj *)GUI_LOCK_H(h)
+  #define EDIT_LOCK_H(h)   (EDIT_Obj *)WM_LOCK_H(h)
 #endif
 
 /*********************************************************************
@@ -135,6 +141,7 @@ extern EDIT_PROPS EDIT__DefaultProps;
 */
 U16  EDIT__GetCurrentChar  (EDIT_Obj * pObj);
 void EDIT__SetCursorPos    (EDIT_Handle hObj, int CursorPos);
+void EDIT__SetCursorPosEx  (EDIT_Handle hObj, int CursorPos, U8 Delete);
 void EDIT__SetValueUnsigned(EDIT_Handle hObj, I32 Value);
 
 #endif // GUI_WINSUPPORT

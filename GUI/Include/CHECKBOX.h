@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,7 +48,7 @@ Purpose     : CHECKBOX include
 #define CHECKBOX_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -64,21 +66,27 @@ Purpose     : CHECKBOX include
 
 /*********************************************************************
 *
-*       Color indices
+*       CHECKBOX color indexes
+*
+*  Description
+*    Color indexes for CHECKBOX widget.
 */
-#define CHECKBOX_CI_DISABLED 0
-#define CHECKBOX_CI_ENABLED  1
+#define CHECKBOX_CI_DISABLED 0            // Color used for disabled state.
+#define CHECKBOX_CI_ENABLED  1            // Color used for enabled state.
 
 /*********************************************************************
 *
-*       Bitmap indices
+*       CHECKBOX bitmap indexes
+*
+*  Description
+*    Bitmap indexes for CHECKBOX widget.
 */
-#define CHECKBOX_BI_INACTIV_UNCHECKED 0
-#define CHECKBOX_BI_ACTIV_UNCHECKED   1
-#define CHECKBOX_BI_INACTIV_CHECKED   2
-#define CHECKBOX_BI_ACTIV_CHECKED     3
-#define CHECKBOX_BI_INACTIV_3STATE    4
-#define CHECKBOX_BI_ACTIV_3STATE      5
+#define CHECKBOX_BI_INACTIV_UNCHECKED 0   // Bitmap displayed when the CHECKBOX is unchecked and disabled.
+#define CHECKBOX_BI_ACTIV_UNCHECKED   1   // Bitmap displayed when the CHECKBOX is unchecked and enabled.
+#define CHECKBOX_BI_INACTIV_CHECKED   2   // Bitmap displayed when the CHECKBOX is checked and disabled.
+#define CHECKBOX_BI_ACTIV_CHECKED     3   // Bitmap displayed when the CHECKBOX is checked and enabled.
+#define CHECKBOX_BI_INACTIV_3STATE    4   // Bitmap displayed when the CHECKBOX is in the third state and disabled.
+#define CHECKBOX_BI_ACTIV_3STATE      5   // Bitmap displayed when the CHECKBOX is in the third state and enabled.
 
 /*********************************************************************
 *
@@ -133,7 +141,6 @@ int              CHECKBOX_GetDefaultAlign     (void);
 GUI_COLOR        CHECKBOX_GetDefaultBkColor   (void);
 const GUI_FONT * CHECKBOX_GetDefaultFont      (void);
 int              CHECKBOX_GetDefaultSpacing   (void);
-int              CHECKBOX_GetDefaultTextAlign (void);
 GUI_COLOR        CHECKBOX_GetDefaultTextColor (void);
 int              CHECKBOX_GetUserData         (CHECKBOX_Handle hObj, void * pDest, int NumBytes);
 void             CHECKBOX_SetDefaultAlign     (int Align);
@@ -142,8 +149,10 @@ GUI_COLOR        CHECKBOX_SetDefaultFocusColor(GUI_COLOR Color);
 void             CHECKBOX_SetDefaultFont      (const GUI_FONT * pFont);
 void             CHECKBOX_SetDefaultImage     (const GUI_BITMAP * pBitmap, unsigned int Index);
 void             CHECKBOX_SetDefaultSpacing   (int Spacing);
-void             CHECKBOX_SetDefaultTextAlign (int Align);
 void             CHECKBOX_SetDefaultTextColor (GUI_COLOR Color);
+
+#define          CHECKBOX_GetDefaultTextAlign CHECKBOX_GetDefaultAlign
+#define          CHECKBOX_SetDefaultTextAlign CHECKBOX_SetDefaultAlign
 
 /*********************************************************************
 *

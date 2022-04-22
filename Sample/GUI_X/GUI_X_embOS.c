@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -149,17 +151,53 @@ void GUI_X_InitOS(void) {
 *                 GUI_X_SignalEvent()
 */
 
+/*********************************************************************
+*
+*       GUI_X_WaitEvent()
+*
+*  Function description
+*    Waits for an event.
+*
+*  Additional information
+*    This function is optional, it is used only via the macro GUI_X_WAIT_EVENT or the
+*    function GUI_SetWaitEventFunc().
+*/
 void GUI_X_WaitEvent(void)    {
   _pGUITask = OS_GetpCurrentTask();
   OS_WaitEvent(1);
 }
 
+/*********************************************************************
+*
+*       GUI_X_SignalEvent()
+*
+*  Function description
+*    Signals an event.
+*
+*  Additional information
+*    This function is optional, it is used only via the macro GUI_X_SIGNAL_EVENT
+*    or the function GUI_SetSignalEventFunc().
+*/
 void GUI_X_SignalEvent(void)    {
   if (_pGUITask) {
     OS_SignalEvent(1, _pGUITask);
   }
 }
 
+/*********************************************************************
+*
+*       GUI_X_WaitEventTimed()
+*
+*  Function description
+*    Waits for an event for the given period.
+*
+*  Parameters
+*    Period: Period in ms to be used.
+*
+*  Additional information
+*    This function is optional, it is used only via the macro GUI_X_WAIT_EVENT_TIMED
+*    or the function GUI_SetWaitEventTimedFunc().
+*/
 void GUI_X_WaitEventTimed(int Period) {
   static OS_TIMER Timer;
   static int Initialized;

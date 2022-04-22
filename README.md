@@ -20,7 +20,7 @@ emWin is an embedded graphic library and graphical user interface (GUI) framewor
    * Multi-codepages support
    * Unicode support
    * Right-to-left and bidirectional text support
-* PC Tools to support emWin GUI development (such as Bitmap Converter and GUIBuilder)
+* PC Tools to support emWin GUI development (such as Bitmap Converter and AppWizard)
 * Display Drivers
     * BitPlains
     * CompactColor_16
@@ -31,18 +31,17 @@ emWin is an embedded graphic library and graphical user interface (GUI) framewor
 
 ### Quick Start
 
-Refer to [emWin Overview page](https://cypresssemiconductorco.github.io/emwin/emwin_overview/html/index.html) for instructions on how to set up and configure the emWin library.
+Refer to [emWin Overview page](https://infineon.github.io/emwin/emwin_overview/html/index.html) for instructions on how to set up and configure the emWin library.
 
 ### More information
 The following resources contain more information:
 * [emWin Middleware RELEASE.md](./RELEASE.md)
-* [emWin Middleware API Reference Guide](https://cypresssemiconductorco.github.io/emwin/emwin_overview/html/index.html)
-* [ModusToolbox Software Environment, Quick Start Guide, Documentation, and Videos](https://www.cypress.com/products/modustoolbox-software-environment)
-* [emWin Middleware Code Example for MBED OS](https://github.com/cypresssemiconductorco)
-* [emWin Middleware Code Examples at GITHUB](https://github.com/cypresssemiconductorco)
-* [PSoC 6 Technical Reference Manuals](https://www.cypress.com/search/all?f%5B0%5D=meta_type%3Atechnical_documents&f%5B1%5D=resource_meta_type%3A583&f%5B2%5D=field_related_products%3A114026)
-* [PSoC 6 Programmable System-on-Chip datasheets](https://www.cypress.com/search/all?f%5B0%5D=meta_type%3Atechnical_documents&f%5B1%5D=field_related_products%3A114026&f%5B2%5D=resource_meta_type%3A575)
-* [Cypress Semiconductor](http://www.cypress.com)
+* [emWin Middleware API Reference Guide](https://infineon.github.io/emwin/emwin_overview/html/index.html)
+* [ModusToolbox&trade; Software Environment, Quick Start Guide, Documentation, and Videos](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software)
+* [emWin Middleware Code Example for ModusToolbox](https://github.com/Infineon?q=mtb-example-psoc6-emwin%20NOT%20deprecated)
+* [PSoC 6 Technical Reference Manuals](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Technical%20Reference%20Manual&view=downloads)
+* [PSoC 6 Programmable System-on-Chip datasheets](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Datasheet&view=downloads)
+* [Infineon](https://www.infineon.com)
 
 ---
-© Cypress Semiconductor Corporation, 2019.
+© 2019-2021, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.

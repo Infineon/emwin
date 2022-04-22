@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -182,6 +184,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_556;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_655;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_666;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_666_9;
+extern const LCD_API_COLOR_CONV LCD_API_ColorConv_666_18;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_822216;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_84444;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_8666;
@@ -189,6 +192,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_8666_1;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_88666I;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_888;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_8888;
+extern const LCD_API_COLOR_CONV LCD_API_ColorConv_8888I;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M111;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M1555I;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M222;
@@ -205,6 +209,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M556;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M655;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M666;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M666_9;
+extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M666_18;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M8565;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M888;
 extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M8888;
@@ -240,6 +245,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M8888I;
 #define GUICC_655       &LCD_API_ColorConv_655
 #define GUICC_666       &LCD_API_ColorConv_666
 #define GUICC_666_9     &LCD_API_ColorConv_666_9
+#define GUICC_666_18    &LCD_API_ColorConv_666_18
 #define GUICC_822216    &LCD_API_ColorConv_822216
 #define GUICC_84444     &LCD_API_ColorConv_84444
 #define GUICC_8666      &LCD_API_ColorConv_8666
@@ -247,6 +253,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M8888I;
 #define GUICC_88666I    &LCD_API_ColorConv_88666I
 #define GUICC_888       &LCD_API_ColorConv_888
 #define GUICC_8888      &LCD_API_ColorConv_8888
+#define GUICC_8888I     &LCD_API_ColorConv_8888I
 #define GUICC_M111      &LCD_API_ColorConv_M111
 #define GUICC_M1555I    &LCD_API_ColorConv_M1555I
 #define GUICC_M222      &LCD_API_ColorConv_M222
@@ -262,6 +269,7 @@ extern const LCD_API_COLOR_CONV LCD_API_ColorConv_M8888I;
 #define GUICC_M655      &LCD_API_ColorConv_M655
 #define GUICC_M666      &LCD_API_ColorConv_M666
 #define GUICC_M666_9    &LCD_API_ColorConv_M666_9
+#define GUICC_M666_18   &LCD_API_ColorConv_M666_18
 #define GUICC_M8565     &LCD_API_ColorConv_M8565
 #define GUICC_M888      &LCD_API_ColorConv_M888
 #define GUICC_M8888     &LCD_API_ColorConv_M8888
@@ -327,10 +335,27 @@ typedef void tLCDDEV_DrawBitmap   (int x0, int y0, int xsize, int ysize,
                        int BitsPerPixel, int BytesPerLine,
                        const U8 * pData, int Diff,
                        const void * pTrans);   /* Really LCD_PIXELINDEX, but is void to avoid compiler warnings */
-#define GUI_MEMDEV_APILIST_1  &GUI_MEMDEV_DEVICE_1
-#define GUI_MEMDEV_APILIST_8  &GUI_MEMDEV_DEVICE_8
-#define GUI_MEMDEV_APILIST_16 &GUI_MEMDEV_DEVICE_16
-#define GUI_MEMDEV_APILIST_32 &GUI_MEMDEV_DEVICE_32
+
+/*********************************************************************
+*
+*       Memory device color depths
+*
+*  Description
+*    Defines the color depth of the Memory Device in bpp. The color depth of the Memory Device should be
+*    equal or greater than the required bits for the color conversion routines.
+*
+*  Additional information
+*    A Memory Device with a 1bpp color conversion (GUI_COLOR_CONV_1) for example requires at least a Memory Device with
+*    1bpp color depth. The available Memory Devices are 1bpp, 8bpp, 16bpp and 32bpp Memory Devices. So an 1bpp Memory
+*    Device should be used.
+*
+*    If using a 4 bit per pixel color conversion (GUI_COLOR_CONV_4) at least 4bpp are needed for the Memory Device. In this
+*    case an 8bpp Memory Device should be used.
+*/
+#define GUI_MEMDEV_APILIST_1  &GUI_MEMDEV_DEVICE_1    // Create Memory Device with 1bpp color depth (1 byte per 8 pixels). Use if the specified color conversion requires 1bpp.
+#define GUI_MEMDEV_APILIST_8  &GUI_MEMDEV_DEVICE_8    // Create Memory Device with 8bpp color depth (1 byte per pixel). Use if the specified color conversion requires 8bpp or less.
+#define GUI_MEMDEV_APILIST_16 &GUI_MEMDEV_DEVICE_16   // Create Memory Device with 16bpp color depth (1 U16 per pixel). Use if the specified color conversion requires more than 8 bpp (high color modes).
+#define GUI_MEMDEV_APILIST_32 &GUI_MEMDEV_DEVICE_32   // Create Memory Device with 32bpp color depth (1 U32 per pixel). Use if the specified color conversion requires more than 16 bpp (true color modes).
 
 /*********************************************************************
 *
@@ -443,7 +468,6 @@ int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
 #define LCD_DEVFUNC_SETSIZE       0x05 /* ...setting the layer size */
 #define LCD_DEVFUNC_SETVIS        0x06 /* ...setting the visibility of a layer */
 #define LCD_DEVFUNC_24BPP         0x07 /* ...drawing 24bpp bitmaps */
-#define LCD_DEVFUNC_NEXT_PIXEL    0x08 /* ...drawing a bitmap pixel by pixel */
 #define LCD_DEVFUNC_SET_VRAM_ADDR 0x09 /* ...setting the VRAM address */
 #define LCD_DEVFUNC_SET_VSIZE     0x0A /* ...setting the VRAM size */
 #define LCD_DEVFUNC_SET_SIZE      0x0B /* ...setting the display size */
@@ -489,6 +513,7 @@ int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
 #define LCD_DEVDATA_MEMDEV        0x01 /* ...default memory device API */
 #define LCD_DEVDATA_PHYSPAL       0x02 /* ...physical palette */
 #define LCD_DEVDATA_VRAMADDR      0x03 /* ...VRAM address */
+#define LCD_DEVDATA_NEXT_PIXEL    0x04 /* ...drawing a bitmap pixel by pixel */
 
 /*********************************************************************
 *
@@ -759,6 +784,7 @@ unsigned char LCD_X_Read00(void);
 unsigned char LCD_X_Read01(void);
 void LCD_X_Write00 (unsigned char c);
 void LCD_X_Write01 (unsigned char c);
+void LCD_X_WriteM00(unsigned char * pData, int NumBytes);
 void LCD_X_WriteM01(unsigned char * pData, int NumBytes);
 
 #if defined(__cplusplus)

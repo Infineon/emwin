@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -49,7 +51,6 @@ Attention : Do not modify this file ! If you do, you will not
 #ifndef  GUI_VNC_H
 #define  GUI_VNC_H
 
-#include "GUI_Private.h"
 #include "GUI_Type.h"
 #include "IP_FS.h"
 
@@ -69,6 +70,10 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
 
 #define GUI_DES_ENCRYPT 0
 #define GUI_DES_DECRYPT 1
+
+#ifndef   GUI_VNC_BUFFER_SIZE
+  #define GUI_VNC_BUFFER_SIZE        1000
+#endif
 
 //
 // File transfer
@@ -153,6 +158,10 @@ typedef struct GUI_VNC_CONTEXT {
   int (* pfStoreData)(struct GUI_VNC_CONTEXT * pContext, BUFFER_CB * pBCB, const U8 * pData, int NumBytes);
   int (* pfFlush)    (struct GUI_VNC_CONTEXT * pContext, BUFFER_CB * pBCB);
   int (* pfRead)     (struct GUI_VNC_CONTEXT * pContext, U8 *, int Len);
+  //
+  // Color format
+  //
+  LCD_PIXELINDEX (* pfColor2Index)(LCD_COLOR Color);
 } GUI_VNC_CONTEXT;
 
 typedef struct {
@@ -198,9 +207,9 @@ void GUI_VNC__SetRFBExtensionHandler(int (* pFunc)(U32, GUI_VNC_CONTEXT *, BUFFE
 //
 // External routine to link the server to the system ... USER defined !
 //
-int  GUI_VNC_X_StartServer  (int LayerIndex, int ServerIndex);
-int  GUI_VNC_X_StartServerFT(int LayerIndex, int ServerIndex);
-void GUI_VNC_X_getpeername  (U32 * Addr);
+int  GUI_VNC_X_StartServer  (int LayerIndex,  int ServerIndex);
+int  GUI_VNC_X_StartServerFT(int LayerIndex,  int ServerIndex);
+void GUI_VNC_X_getpeername  (int ServerIndex, U32 * Addr);
 
 #if defined(__cplusplus)
   }

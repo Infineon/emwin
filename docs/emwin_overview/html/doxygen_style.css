@@ -1487,8 +1487,8 @@ tr.heading h2 {
 
 */
 
-/* cypress logo */
-img[src="cypress_logo.png"]{
+/* Infineon+Cypress logo */
+img[src="IFXCYP_one-line.png"]{
     height:75px;
     /*float: right;*/
 }

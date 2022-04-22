@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,16 +30,31 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
 SUA period:               2009-06-12 - 2022-07-27
 Contact to extend SUA:    sales@segger.com
-----------------------------------------------------------------------
-File        : MTOUCH_ScratchAndGestures.c
-Purpose     : Demonstrates how to use multi touch support and gestures
-----------------------------------------------------------------------
+-------------------------- END-OF-HEADER -----------------------------
+File    : MTOUCH_ScratchAndGestures.c
+Purpose : Demonstrates the multi touch module of emWin
+Literature:
+Notes:
+Additional information:
+  Preperations:
+    This demo works only if the device has a multi touch screen.
+  Expected behavior:
+    Use touch input to zoom and rotate an object or draw multiple lines
+    with a color for each touch point.
+  Sample output:
+    Two buttons to select the demo.
+    Gesture demo:
+    A rectangle object to modified by the user.
+    Scratch pad demo:
+    A drawn line for each touch point in different colors.
 */
 
 #include "DIALOG.h"
@@ -57,7 +72,7 @@ Purpose     : Demonstrates how to use multi touch support and gestures
 #define EXEC_GESTURES   1
 
 #define TIME_WAIT          3000 // Time after a demo ends if no input is detected
-#define TIME_UP              20 // Dwell time for scratch pad to be allowed without input
+#define TIME_UP              50 // Dwell time for scratch pad to be allowed without input
 #define TIME_CLEAN_SCRATCH 1000 // Time after scratch pad clears itself if no input is detected
 
 //
@@ -119,17 +134,17 @@ typedef struct {
 // Buffer of colors (and touch input) to be used by scratch pad demo
 //
 static SCRATCH_DATA _aData[] = {
-  { GUI_GREEN     },
-  { GUI_RED       },
-  { GUI_CYAN      },
-  { GUI_MAGENTA   },
-  { GUI_YELLOW    },
-  { GUI_WHITE     },
-  { GUI_BLUE      },
-  { GUI_LIGHTBLUE },
-  { GUI_LIGHTGREEN},
-  { GUI_LIGHTRED  },
-  { 0             }
+  { GUI_GREEN     , { 0, 0, 0, 0 } },
+  { GUI_RED       , { 0, 0, 0, 0 } },
+  { GUI_CYAN      , { 0, 0, 0, 0 } },
+  { GUI_MAGENTA   , { 0, 0, 0, 0 } },
+  { GUI_YELLOW    , { 0, 0, 0, 0 } },
+  { GUI_WHITE     , { 0, 0, 0, 0 } },
+  { GUI_BLUE      , { 0, 0, 0, 0 } },
+  { GUI_LIGHTBLUE , { 0, 0, 0, 0 } },
+  { GUI_LIGHTGREEN, { 0, 0, 0, 0 } },
+  { GUI_LIGHTRED  , { 0, 0, 0, 0 } },
+  { 0             , { 0, 0, 0, 0 } }
 };
 
 //
@@ -2657,7 +2672,8 @@ GUI_CONST_STORAGE GUI_BITMAP bmGestures_120x100 = {
   120, // BytesPerLine
   8, // BitsPerPixel
   _acGestures_120x100,  // Pointer to picture data (indices)
-  &_PalGestures_120x100   // Pointer to palette
+  &_PalGestures_120x100,   // Pointer to palette
+  NULL
 };
 
 /*********************************************************************
@@ -3113,7 +3129,8 @@ GUI_CONST_STORAGE GUI_BITMAP bmScratchPad_120x100 = {
   120, // BytesPerLine
   8, // BitsPerPixel
   _acScratchPad_120x100,  // Pointer to picture data (indices)
-  &_PalScratchPad_120x100   // Pointer to palette
+  &_PalScratchPad_120x100,   // Pointer to palette
+  NULL
 };
 
 /*********************************************************************
@@ -3399,7 +3416,7 @@ static void _cbGestures(WM_MESSAGE * pMsg) {
   static I32 Factor;
   static int ReactOnMove;
   static WM_ZOOM_INFO ZoomInfo = {
-    FACTOR_MIN, FACTOR_MAX
+    FACTOR_MIN, FACTOR_MAX, 0, 0, 0, 0, 0, 0, 0, {0, 0}
   };
   WM_GESTURE_INFO * pGestureInfo;
   GUI_TIMER_TIME * pTimeEnd;
@@ -3733,9 +3750,10 @@ void MainTask(void) {
 
   ReactOnMove = 1;
   #if GUI_SUPPORT_MEMDEV
-    WM_SetCreateFlags(WM_CF_MEMDEV);
+    //WM_SetCreateFlags(WM_CF_MEMDEV);
   #endif
   GUI_Init();
+  WM_MULTIBUF_Enable(1); 
   //
   // Check if recommended memory for the sample is available
   //

@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -3134,7 +3136,7 @@ static GUI_MEMDEV_Handle _CreateCircle(int r, U32 Color0, U32 Color1) {
   // Set all indices to 0
   //
 #if (GUI_USE_ARGB)
-  GUI_SetBkColorIndex(0xFF000000);
+  GUI_SetBkColorIndex(0xFF000000ul);
 #else
   GUI_SetBkColorIndex(0);
 #endif
@@ -3174,7 +3176,7 @@ static GUI_MEMDEV_Handle _CreateRing(int r, int w, U32 Color0, U32 Color1) {
   // Set all indices to 0
   //
 #if (GUI_USE_ARGB)
-  GUI_SetBkColorIndex(0xFF000000);
+  GUI_SetBkColorIndex(0xFF000000ul);
 #else
   GUI_SetBkColorIndex(0);
 #endif
@@ -3520,7 +3522,7 @@ static GUI_MEMDEV_Handle _CreateScale(
     //
     GUI_MEMDEV_Select(hMemText);
 #if (GUI_USE_ARGB)
-    GUI_SetBkColorIndex(0xFF000000);
+    GUI_SetBkColorIndex(0xFF000000ul);
 #else
     GUI_SetBkColorIndex(0);
 #endif
@@ -3537,7 +3539,7 @@ static GUI_MEMDEV_Handle _CreateScale(
     hMemRot = GUI_MEMDEV_CreateFixed(0, 0, SizeMem, SizeMem, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV);
     GUI_MEMDEV_Select(hMemRot);
 #if (GUI_USE_ARGB)
-    GUI_SetBkColorIndex(0xFF000000);
+    GUI_SetBkColorIndex(0xFF000000ul);
 #else
     GUI_SetBkColorIndex(0);
 #endif

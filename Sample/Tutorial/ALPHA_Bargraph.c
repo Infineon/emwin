@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -481,7 +483,6 @@ static void _DemoBarGraph(void) {
   int Blend;
   int NumItems;
   GUI_MEMDEV_Handle hMemTrans;
-  U32 * pData;
 
   AddBlend = 1;
   Blend    = 64;
@@ -500,7 +501,6 @@ static void _DemoBarGraph(void) {
   GUI_SetFont(&GUI_Font24B_ASCII);
   GUI_DispStringHCenterAt("emWin bargraph demo", xSize / 2, yPosText);
   hMemTrans = GUI_MEMDEV_CreateFixed32(xPos, yPosDiagram, 172, 122);
-  pData = GUI_MEMDEV_GetDataPtr(hMemTrans);
   GUI_MEMDEV_Select(hMemTrans);
   GUI_SetBkColor(GUI_TRANSPARENT);
   GUI_Clear();

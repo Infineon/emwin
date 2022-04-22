@@ -1,0 +1,1 @@
+for /f "usebackq delims=|" %%f in (`dir /b "C:\Users\Florian\Desktop\ProductIcons"`) do "C:\Tool\Segger\BmpCvt.exe" %%f -convertintotranspalette -saveas%%f,1,7 -exit

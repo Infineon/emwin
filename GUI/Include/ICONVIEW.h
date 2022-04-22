@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,7 +48,7 @@ Purpose     : ICONVIEW include
 #define ICONVIEW_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -67,13 +69,22 @@ Purpose     : ICONVIEW include
 #define ICONVIEW_CF_AUTOSCROLLBAR_V (1 << 1)
 #define ICONVIEW_SF_AUTOSCROLLBAR_V ICONVIEW_CF_AUTOSCROLLBAR_V
 
-//
-// Color indices
-//
-#define ICONVIEW_CI_BK              0
-#define ICONVIEW_CI_UNSEL           0
-#define ICONVIEW_CI_SEL             1
-#define ICONVIEW_CI_DISABLED        2
+/*********************************************************************
+*
+*       ICONVIEW color indexes
+*
+*  Description
+*    Color indexes used by the ICONVIEW widget.
+*
+*  Additional information
+*    ICONVIEW_CI_BK is only used by the routines ICONVIEW_GetBkColor() and
+*    ICONVIEW_SetBkColor() instead of ICONVIEW_CI_UNSEL.
+*/
+#define ICONVIEW_CI_BK              0           // Color used to draw the widget background.
+#define ICONVIEW_CI_UNSEL           0           // Color of an unselected item.
+#define ICONVIEW_CI_SEL             1           // Color of a selected item.
+#define ICONVIEW_CI_DISABLED        2           // Color used in disabled state.
+/* # emDoc */
 
 //
 // Icon alignment flags, horizontal
@@ -112,7 +123,6 @@ int              ICONVIEW_AddBMPItem              (ICONVIEW_Handle hObj, const U
 int              ICONVIEW_AddBMPItemEx            (ICONVIEW_Handle hObj, const void * pBMP, GUI_GET_DATA_FUNC * pfGetData, const char * pText);
 int              ICONVIEW_AddStreamedBitmapItem   (ICONVIEW_Handle hObj, const void * pStreamedBitmap, const char * pText);
 void             ICONVIEW_DeleteItem              (ICONVIEW_Handle hObj, unsigned Index);
-//void             ICONVIEW_EnableStreamAuto        (void);
 GUI_COLOR        ICONVIEW_GetBkColor              (ICONVIEW_Handle hObj, int Index);
 const GUI_FONT * ICONVIEW_GetFont                 (ICONVIEW_Handle hObj);
 U32              ICONVIEW_GetItemUserData         (ICONVIEW_Handle hObj, int Index);

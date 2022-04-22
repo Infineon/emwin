@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "SEGGER emWin graphics library 5.48.1", "index.html", [
+  [ "SEGGER emWin graphics library 6.24.0", "index.html", [
     [ "General Description", "index.html#section_emwin_general", [
       [ "emWin Package Structure", "index.html#group_emwin_package_structure", null ],
       [ "Supported Display Drivers", "index.html#group_emwin_display_drivers", null ]
@@ -17,19 +17,19 @@ var NAVTREE =
       [ "Lin Driver", "index.html#group_emwin_lin_configuration", null ],
       [ "SPage Driver", "index.html#group_emwin_spage_configuration", null ],
       [ "CompactColor_16 Driver", "index.html#group_emwin_compactcolor16_configuration", null ],
-      [ "Template Driver", "index.html#group_emwin_template_configuration", null ]
+      [ "Template Driver", "index.html#group_emwin_template_configuration", null ],
+      [ "AppWizard Project Setup", "index.html#group_emwin_appwizard", null ]
     ] ],
     [ "Supported Software and Tools", "index.html#section_emwin_toolchain", null ],
-    [ "Known Issues", "index.html#section_emwin_known_issues", null ],
     [ "Changelog", "index.html#group_emwin_changelog", null ],
-    [ "emWin User Guide", "./../../UM03001_emWin5.pdf", null ],
+    [ "emWin User Guide", "./../../UM03001_emWin.pdf", null ],
     [ "SEGGER emWin Web Page", "^https://www.segger.com/products/user-interface/emwin/", null ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"./../../UM03001_emWin5.pdf"
+"./../../UM03001_emWin.pdf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

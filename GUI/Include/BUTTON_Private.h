@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -45,7 +47,7 @@ Purpose     : BUTTON private header file
 #ifndef BUTTON_PRIVATE_H
 #define BUTTON_PRIVATE_H
 
-#include "WM.h"
+#include "WM_Intern.h"
 #include "BUTTON.h"
 
 #if GUI_WINSUPPORT
@@ -74,22 +76,22 @@ typedef struct {
 } BUTTON_SKIN_PRIVATE;
 
 typedef struct {
-  GUI_COLOR aBkColor[3];
-  GUI_COLOR aTextColor[3];
-  GUI_COLOR FocusColor;
-  GUI_COLOR FrameColor;
-  const GUI_FONT * pFont;
+  GUI_COLOR           aBkColor[3];
+  GUI_COLOR           aTextColor[3];
+  GUI_COLOR           FocusColor;
+  GUI_COLOR           FrameColor;
+  const GUI_FONT    * pFont;
   BUTTON_SKIN_PRIVATE SkinPrivate;
-  I16 Align;
-  I16 xPosText, yPosText;
+  I16                 Align;
+  I16                 xPosText, yPosText;
 } BUTTON_PROPS;
 
 typedef struct {
-  WIDGET Widget;
-  BUTTON_PROPS Props;
+  WIDGET              Widget;
+  BUTTON_PROPS        Props;
   WIDGET_SKIN const * pWidgetSkin;
-  WM_HMEM hpText;
-  WM_HMEM ahDrawObj[3];
+  WM_HMEM             hpText;
+  WM_HMEM             ahDrawObj[3];
 } BUTTON_Obj;
 
 /*********************************************************************
@@ -108,7 +110,7 @@ typedef struct {
   BUTTON_Obj * BUTTON_LockH(BUTTON_Handle h);
   #define BUTTON_LOCK_H(h)   BUTTON_LockH(h)
 #else
-  #define BUTTON_LOCK_H(h)   (BUTTON_Obj *)GUI_LOCK_H(h)
+  #define BUTTON_LOCK_H(h)   (BUTTON_Obj *)WM_LOCK_H(h)
 #endif
 
 /*********************************************************************

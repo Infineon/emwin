@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.24 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -30,7 +30,9 @@ Licensor:                 SEGGER Microcontroller Systems LLC
 Licensed to:              Cypress Semiconductor Corp, 198 Champion Ct., San Jose, CA 95134, USA
 Licensed SEGGER software: emWin
 License number:           GUI-00319
-License model:            Services and License Agreement, signed June 10th, 2009
+License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
+                          and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
+                          and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -46,7 +48,7 @@ Purpose     : Multiple choice object include
 #define DROPDOWN_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "LISTBOX.h"
 
 #if GUI_WINSUPPORT
@@ -57,19 +59,29 @@ Purpose     : Multiple choice object include
 
 /************************************************************
 *
-*       Create flags
+*       DROPDOWN create flags
+*
+*  Description
+*    These flags can be used when creating a DROPDOWN widget via
+*    DROPDOWN_CreateEx(). 0 can be specified for the \a{ExFlags} parameter,
+*    if no flags should be used.
 */
-#define DROPDOWN_CF_AUTOSCROLLBAR   (1 << 0)
-#define DROPDOWN_CF_UP              (1 << 1)
+#define DROPDOWN_CF_AUTOSCROLLBAR   (1 << 0)    // Enable automatic use of a scroll bar. For details, refer to DROPDOWN_SetAutoScroll().
+#define DROPDOWN_CF_UP              (1 << 1)    // Creates a DROPDOWN widget which opens the dropdown list above the widget. This flag is useful if
+                                                // the space below the widget is not sufficient for the dropdown list.
+#define DROPDOWN_CF_MOTION          (1 << 2)    // Enables motion support on the vertical axis.
 
 /*********************************************************************
 *
-*       Color indices
+*       DROPDOWN color indexes
+*
+*  Description
+*    Color indexes for DROPDOWN widget.
 */
-#define DROPDOWN_CI_UNSEL    0
-#define DROPDOWN_CI_SEL      1
-#define DROPDOWN_CI_SELFOCUS 2
-
+#define DROPDOWN_CI_UNSEL    0    // Unselected element.
+#define DROPDOWN_CI_SEL      1    // Selected element, without focus.
+#define DROPDOWN_CI_SELFOCUS 2    // Selected element, with focus.
+/* not documented */
 #define DROPDOWN_CI_ARROW    0
 #define DROPDOWN_CI_BUTTON   1
 
@@ -81,6 +93,17 @@ Purpose     : Multiple choice object include
 #define DROPDOWN_SKINFLEX_PI_FOCUSED  1
 #define DROPDOWN_SKINFLEX_PI_ENABLED  2
 #define DROPDOWN_SKINFLEX_PI_DISABLED 3
+
+/*********************************************************************
+*
+*       DROPDOWN notification codes
+*
+*  Description
+*    Notifications sent by DROPDOWN widget to its parent widget through
+*    a WM_NOTIFY_PARENT message.
+*/
+#define DROPDOWN_NOTIFICATION_EXPANDED   (WM_NOTIFICATION_WIDGET + 0)     // Sent when the list of the DROPDOWN has been expanded.
+#define DROPDOWN_NOTIFICATION_COLLAPSED  (WM_NOTIFICATION_WIDGET + 1)     // Sent when the list of the DROPDOWN has been collapsed.
 
 /*********************************************************************
 *
@@ -128,10 +151,12 @@ void DROPDOWN_Callback(WM_MESSAGE * pMsg);
 */
 void             DROPDOWN_AddKey           (DROPDOWN_Handle hObj, int Key);
 void             DROPDOWN_AddString        (DROPDOWN_Handle hObj, const char* s);
+void             DROPDOWN_Clear            (DROPDOWN_Handle hObj);
 void             DROPDOWN_Collapse         (DROPDOWN_Handle hObj);
 void             DROPDOWN_DecSel           (DROPDOWN_Handle hObj);
 void             DROPDOWN_DecSelExp        (DROPDOWN_Handle hObj);
 void             DROPDOWN_DeleteItem       (DROPDOWN_Handle hObj, unsigned int Index);
+void             DROPDOWN_EnableMotion     (DROPDOWN_Handle hObj, int Flags);
 void             DROPDOWN_Expand           (DROPDOWN_Handle hObj);
 GUI_COLOR        DROPDOWN_GetBkColor       (DROPDOWN_Handle hObj, unsigned int Index);
 GUI_COLOR        DROPDOWN_GetColor         (DROPDOWN_Handle hObj, unsigned int Index);
@@ -144,14 +169,15 @@ int              DROPDOWN_GetNumItems      (DROPDOWN_Handle hObj);
 int              DROPDOWN_GetSel           (DROPDOWN_Handle hObj);
 int              DROPDOWN_GetSelExp        (DROPDOWN_Handle hObj);
 GUI_COLOR        DROPDOWN_GetTextColor     (DROPDOWN_Handle hObj, unsigned int Index);
+U8               DROPDOWN_GetUpMode        (DROPDOWN_Handle hObj);
 int              DROPDOWN_GetUserData      (DROPDOWN_Handle hObj, void * pDest, int NumBytes);
 void             DROPDOWN_IncSel           (DROPDOWN_Handle hObj);
 void             DROPDOWN_IncSelExp        (DROPDOWN_Handle hObj);
 void             DROPDOWN_InsertString     (DROPDOWN_Handle hObj, const char* s, unsigned int Index);
 void             DROPDOWN_SetAutoScroll    (DROPDOWN_Handle hObj, int OnOff);
-void             DROPDOWN_SetBkColor       (DROPDOWN_Handle hObj, unsigned int Index, GUI_COLOR color);
+void             DROPDOWN_SetBkColor       (DROPDOWN_Handle hObj, unsigned int Index, GUI_COLOR Color);
 void             DROPDOWN_SetColor         (DROPDOWN_Handle hObj, unsigned int Index, GUI_COLOR Color);
-void             DROPDOWN_SetFont          (DROPDOWN_Handle hObj, const GUI_FONT * pfont);
+void             DROPDOWN_SetFont          (DROPDOWN_Handle hObj, const GUI_FONT * pFont);
 void             DROPDOWN_SetItemDisabled  (DROPDOWN_Handle hObj, unsigned Index, int OnOff);
 void             DROPDOWN_SetItemSpacing   (DROPDOWN_Handle hObj, unsigned Value);
 int              DROPDOWN_SetListHeight    (DROPDOWN_Handle hObj, unsigned Height);
@@ -159,8 +185,10 @@ void             DROPDOWN_SetScrollbarColor(DROPDOWN_Handle hObj, unsigned Index
 void             DROPDOWN_SetScrollbarWidth(DROPDOWN_Handle hObj, unsigned Width);
 void             DROPDOWN_SetSel           (DROPDOWN_Handle hObj, int Sel);
 void             DROPDOWN_SetSelExp        (DROPDOWN_Handle hObj, int Sel);
+void             DROPDOWN_SetString        (DROPDOWN_Handle hObj, const char* s, unsigned int Index);
+void             DROPDOWN_SetText          (DROPDOWN_Handle hObj, const GUI_ConstString * ppText);
 void             DROPDOWN_SetTextAlign     (DROPDOWN_Handle hObj, int Align);
-void             DROPDOWN_SetTextColor     (DROPDOWN_Handle hObj, unsigned int index, GUI_COLOR color);
+void             DROPDOWN_SetTextColor     (DROPDOWN_Handle hObj, unsigned int Index, GUI_COLOR Color);
 void             DROPDOWN_SetTextHeight    (DROPDOWN_Handle hObj, unsigned TextHeight);
 int              DROPDOWN_SetUpMode        (DROPDOWN_Handle hObj, int OnOff);
 int              DROPDOWN_SetUserData      (DROPDOWN_Handle hObj, const void * pSrc, int NumBytes);

@@ -9,7 +9,7 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V6.24 - Graphical user interface for embedded applications **
+** emWin V6.26 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,6 +33,7 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
+                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -338,6 +339,7 @@ int  GUI__GetNumChars       (const char * s);
 int  GUI__GetOverlap        (U16 Char);
 int  GUI__GetLineDistX      (const char * s, int Len);
 int  GUI__GetFontSizeY      (void);
+void GUI__GetTextSize       (GUI_SIZE * pSize, const char * s);
 int  GUI__HandleEOLine      (const char ** ps);
 void GUI__InvertRectColors  (int x0, int y0, int x1, int y1);
 void GUI__InvertRectColorsEx(GUI_RECT * pRect);
@@ -354,7 +356,6 @@ void GUI__ClearTextBackground(int xDist, int yDist);
 int  GUI__WrapGetNumCharsDisp       (const char * pText, int xSize, GUI_WRAPMODE WrapMode);
 int  GUI__WrapGetNumCharsToNextLine (const char * pText, int xSize, GUI_WRAPMODE WrapMode);
 int  GUI__WrapGetNumBytesToNextLine (const char * pText, int xSize, GUI_WRAPMODE WrapMode);
-//void GUI__memset    (U8  * p, U8 Fill, int NumBytes);
 void GUI__memset16  (U16 * p, U16 Fill, int NumWords);
 int  GUI__strlen    (const char * s);
 int  GUI__strcmp    (const char * s0, const char * s1);

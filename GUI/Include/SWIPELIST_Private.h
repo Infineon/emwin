@@ -9,7 +9,7 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V6.24 - Graphical user interface for embedded applications **
+** emWin V6.26 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,6 +33,7 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
+                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -88,6 +89,7 @@ typedef struct {
   GUI_COLOR        aBkColor[4];
   int              BitmapSpace;
   int              aBorderSize[4];
+  int              Period;
   U8               Flags;
   int              Threshold;
   unsigned         Overlap;
@@ -104,6 +106,7 @@ typedef struct {
   int                     LastVisible;
   int                     Sel;
   int                     ReleasedItem;
+  WM_HMEM                 hContext;       // Motion context.
 } SWIPELIST_OBJ;
 
 /*********************************************************************
@@ -113,7 +116,7 @@ typedef struct {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define SWIPELIST_INIT_ID(p) p->Widget.DebugId = SWIPELIST_ID
+  #define SWIPELIST_INIT_ID(p) p->Widget.DebugId = WIDGET_TYPE_SWIPELIST
 #else
   #define SWIPELIST_INIT_ID(p)
 #endif
@@ -124,6 +127,18 @@ typedef struct {
 #else
   #define SWIPELIST_LOCK_H(h)   (SWIPELIST_OBJ *)WM_LOCK_H(h)
 #endif
+
+/*********************************************************************
+*
+*       Defines
+*
+**********************************************************************
+*/
+//
+// WM_MOTION_OVERLAP... flags are stored in the upper two bits of Props.Flags
+//
+#define OVERLAP_FLAG_SHIFT     2
+#define OVERLAP_FLAG_MASK      ((WM_MOTION_OVERLAP_TOP | WM_MOTION_OVERLAP_BOTTOM) << OVERLAP_FLAG_SHIFT)
 
 /*********************************************************************
 *

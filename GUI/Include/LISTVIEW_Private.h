@@ -9,7 +9,7 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V6.24 - Graphical user interface for embedded applications **
+** emWin V6.26 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,6 +33,7 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
+                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -131,9 +132,7 @@ struct LISTVIEW_Obj {
   int                          SelCol;
   int                          ShowGrid;
   int                          SortIndex;                                         // Column for sorting
-  int                          MotionPosX;
   int                          MotionPosY;
-  int                          MotionPosOldY;
   unsigned                     RowDistY;
   unsigned                     LBorder;
   unsigned                     RBorder;
@@ -141,6 +140,10 @@ struct LISTVIEW_Obj {
   WM_SCROLL_STATE              ScrollStateV;
   WM_SCROLL_STATE              ScrollStateH;
   WM_HMEM                      hSort;
+  WM_HMEM                      hContext;                                          // Motion context.
+  unsigned                     OverlapDistance;
+  int                          OverlapPeriod;
+  U8                           OverlapFlags;
   U8                           IsSorted;
   U8                           IsPresorted;
   U8                           ReverseSort;                                       // Set to 1 if reverse sorting is required
@@ -156,7 +159,7 @@ struct LISTVIEW_Obj {
 **********************************************************************
 */
 #if GUI_DEBUG_LEVEL >= GUI_DEBUG_LEVEL_CHECK_ALL
-  #define LISTVIEW_INIT_ID(p) (p->Widget.DebugId = LISTVIEW_ID)
+  #define LISTVIEW_INIT_ID(p) (p->Widget.DebugId = WIDGET_TYPE_LISTVIEW)
 #else
   #define LISTVIEW_INIT_ID(p)
 #endif

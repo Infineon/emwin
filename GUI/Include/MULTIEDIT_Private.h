@@ -9,7 +9,7 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V6.24 - Graphical user interface for embedded applications **
+** emWin V6.26 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,6 +33,7 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
+                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -69,6 +70,12 @@ Purpose     : MULTIEDIT include
 
 #define NUM_DISP_MODES 2
 
+/*********************************************************************
+*
+*       Invalid flags
+*
+*  Used for partial invalidation. Stored in pObj->InvalidFlags.
+*/
 #define INVALID_NUMCHARS (1 << 0)
 #define INVALID_NUMLINES (1 << 1)
 #define INVALID_TEXTSIZE (1 << 2)
@@ -112,15 +119,15 @@ typedef struct {
   WM_SCROLL_STATE  ScrollStateV;
   WM_SCROLL_STATE  ScrollStateH;
   U16              Flags;
+  WM_HTIMER        hTimer;
+  GUI_WRAPMODE     WrapMode;
+  int              MotionPosY;
+  WM_HMEM          hContext;             // Motion context.
+  U8               CursorVis;            /* Indicates whether cursor is visible or not*/
+  U8               InvertCursor;
   U8               InvalidFlags;         /* Flags to save validation status */
   U8               EditMode;
   U8               Radius;               // Currently only used by AppWizard
-  WM_HTIMER        hTimer;
-  U8               CursorVis;            /* Indicates whether cursor is visible or not*/
-  U8               InvertCursor;
-  GUI_WRAPMODE     WrapMode;
-  int              MotionPosX;
-  int              MotionPosY;
   U8               MotionActive;
 } MULTIEDIT_OBJ;
 

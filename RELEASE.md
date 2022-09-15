@@ -1,4 +1,4 @@
-# SEGGER emWin Graphics Library 6.24.0
+# SEGGER emWin Graphics Library 6.26.0
  
 ### What's Included?
 
@@ -7,8 +7,7 @@ For a complete description of the emWin Middleware, refer to [README.md](./READM
 The revision history of the emWin Middleware is available
 at [API Reference Guide Changelog](https://infineon.github.io/emwin/emwin_overview/html/index.html#group_emwin_changelog).
 New in this release:
-* Updated emWin middleware to 6.24.0 version
-* Added AppWizard support
+* Updated the emWin middleware to version 6.26.0
 * Updated documentation
 
 
@@ -18,8 +17,8 @@ This version of the emWin Middleware was validated for compatibility with the fo
 | Software and Tools                                      | Version    |
 | :---                                                    | :----:     |
 | ModusToolbox&trade; Software Environment                | 2.4        |
-| PSoC6 Peripheral Driver Library (PDL)                   | 2.3.1      |
-| Segger AppWizard                                        | 1.26b_6.24 |
+| CAT1 Peripheral Driver Library (PDL)                    | 2.4.0      |
+| Segger AppWizard                                        | 1.30_6.26b |
 | abstraction-rtos                                        | 1.5.0      |
 | GCC Compiler                                            | 10.3.1     |
 | IAR Compiler                                            | 8.32       |
@@ -32,9 +31,9 @@ The following resources contain more information:
 * [emWin Middleware API Reference Guide](https://infineon.github.io/emwin/emwin_overview/html/index.html)
 * [ModusToolbox&trade; Software Environment, Quick Start Guide, Documentation, and Videos](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software)
 * [emWin Middleware Code Example for ModusToolbox](https://github.com/Infineon?q=mtb-example-psoc6-emwin%20NOT%20deprecated)
-* [PSoC 6 Technical Reference Manuals](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Technical%20Reference%20Manual&view=downloads)
-* [PSoC 6 Programmable System-on-Chip datasheets](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Datasheet&view=downloads)
+* [PSoC&trade; 6 Technical Reference Manuals](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Technical%20Reference%20Manual&view=downloads)
+* [PSoC&trade; 6 Programmable System-on-Chip datasheets](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Datasheet&view=downloads)
 * [Infineon](https://www.infineon.com)
 
 ---
-© 2019-2021, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
+© 2019-2022, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.

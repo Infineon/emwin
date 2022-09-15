@@ -9,7 +9,7 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V6.24 - Graphical user interface for embedded applications **
+** emWin V6.26 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,6 +33,7 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
+                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
@@ -446,15 +447,24 @@ void (* LCD_GetDevFunc(int LayerIndex, int Item))(void);
 *
 *       Runtime rotation of drivers
 */
-int LCD_ROTATE_AddDriver  (const GUI_DEVICE_API * pDriver);
-int LCD_ROTATE_AddDriverEx(const GUI_DEVICE_API * pDeviceAPI, int LayerIndex);
-int LCD_ROTATE_DecSel     (void);
-int LCD_ROTATE_DecSelEx   (int LayerIndex);
-int LCD_ROTATE_IncSel     (void);
-int LCD_ROTATE_IncSelEx   (int LayerIndex);
-int LCD_ROTATE_SetCallback(void (* pCbOnConfig)(GUI_DEVICE *, int, int), int LayerIndex);
-int LCD_ROTATE_SetSel     (int Index);
-int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
+int  LCD_ROTATE_AddDriver             (const GUI_DEVICE_API * pDriver);
+int  LCD_ROTATE_AddDriverEx           (const GUI_DEVICE_API * pDeviceAPI, int LayerIndex);
+int  LCD_ROTATE_AddDriverExOrientation(const GUI_DEVICE_API * pDeviceAPI, int LayerIndex, int Orientation);
+void LCD_ROTATE_Clear                 (void);
+void LCD_ROTATE_ClearEx               (int LayerIndex);
+int  LCD_ROTATE_DecSel                (void);
+int  LCD_ROTATE_DecSelEx              (int LayerIndex);
+int  LCD_ROTATE_GetCurrentIndex       (void);
+int  LCD_ROTATE_GetCurrentIndexEx     (int LayerIndex);
+int  LCD_ROTATE_GetOrientation        (int DriverIndex);
+int  LCD_ROTATE_GetOrientationEx      (int LayerIndex, int DriverIndex);
+int  LCD_ROTATE_GetNumDrivers         (void);
+int  LCD_ROTATE_GetNumDriversEx       (int LayerIndex);
+int  LCD_ROTATE_IncSel                (void);
+int  LCD_ROTATE_IncSelEx              (int LayerIndex);
+int  LCD_ROTATE_SetCallback           (void (* pCbOnConfig)(GUI_DEVICE *, int, int), int LayerIndex);
+int  LCD_ROTATE_SetSel                (int Index);
+int  LCD_ROTATE_SetSelEx              (int Index, int LayerIndex);
 
 /*********************************************************************
 *
@@ -586,6 +596,7 @@ typedef struct {
 #define LCD_X_SETCHROMAMODE  0x0C /* Setting the chroma blending mode */
 #define LCD_X_SETCHROMA      0x0D /* Setting the chroma values */
 #define LCD_X_SHOWBUFFER     0x0E /* Switching to the given buffer */
+#define LCD_X_EXITCONTROLLER 0x0F /* Exiting the display controller */
 
 int  LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData);
 void LCD_X_Config(void);

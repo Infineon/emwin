@@ -39,9 +39,9 @@ The following resources contain more information:
 * [emWin Middleware API Reference Guide](https://infineon.github.io/emwin/emwin_overview/html/index.html)
 * [ModusToolbox&trade; Software Environment, Quick Start Guide, Documentation, and Videos](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software)
 * [emWin Middleware Code Example for ModusToolbox](https://github.com/Infineon?q=mtb-example-psoc6-emwin%20NOT%20deprecated)
-* [PSoC 6 Technical Reference Manuals](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Technical%20Reference%20Manual&view=downloads)
-* [PSoC 6 Programmable System-on-Chip datasheets](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Datasheet&view=downloads)
+* [PSoC&trade; 6 Technical Reference Manuals](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Technical%20Reference%20Manual&view=downloads)
+* [PSoC&trade; 6 Programmable System-on-Chip datasheets](https://www.infineon.com/cms/en/search.html#!term=PSOC%206%20%20Datasheet&view=downloads)
 * [Infineon](https://www.infineon.com)
 
 ---
-© 2019-2021, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
+© 2019-2022, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.

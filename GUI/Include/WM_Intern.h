@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2022  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V6.26 - Graphical user interface for embedded applications **
+** emWin V6.32 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,11 +33,10 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
-                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2009-06-12 - 2022-07-27
+SUA period:               2009-06-12 - 2023-07-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : WM_Intern.h
@@ -186,14 +185,12 @@ int     WM__ClipAtParentBorders     (GUI_RECT * pRect, WM_HWIN hWin);
 void    WM__Client2Screen           (const WM_Obj * pWin, GUI_RECT * pRect);
 void    WM__DeactivateEx            (void);
 void    WM__DeleteAssocTimer        (WM_HWIN hWin);
-void    WM__DeleteSecure            (WM_HWIN hWin);
 void    WM__DetachWindow            (WM_HWIN hChild);
 void    WM__ForEachDesc             (WM_HWIN hWin, WM_tfForEach * pcb, void * pData);
 void    WM__GetClientRectWin        (const WM_Obj * pWin, GUI_RECT * pRect);
 void    WM__GetClientRectEx         (WM_HWIN hWin, GUI_RECT * pRect);
 WM_HWIN WM__GetFirstSibling         (WM_HWIN hWin);
 WM_HWIN WM__GetFocusedChild         (WM_HWIN hWin);
-int     WM__GetHasFocus             (WM_HWIN hWin);
 WM_HWIN WM__GetLastSibling          (WM_HWIN hWin);
 WM_HWIN WM__GetPrevSibling          (WM_HWIN hWin);
 int     WM__GetTopLevelLayer        (WM_HWIN hWin);
@@ -201,10 +198,7 @@ int     WM__GetWindowSizeX          (const WM_Obj * pWin);
 int     WM__GetWindowSizeY          (const WM_Obj * pWin);
 void    WM__InsertWindowIntoList    (WM_HWIN hWin, WM_HWIN hParent);
 void    WM__Invalidate1Abs          (WM_HWIN hWin, const GUI_RECT * pRect);
-void    WM__InvalidateAreaBelow     (const GUI_RECT * pRect, WM_HWIN StopWin);
 void    WM__InvalidateRectEx        (const GUI_RECT * pInvalidRect, WM_HWIN hParent, WM_HWIN hStop);
-void    WM__InvalidateTransAreaAbove(const GUI_RECT * pRect, WM_HWIN StopWin);
-int     WM__IntersectRect           (GUI_RECT * pDest, const GUI_RECT * pr0, const GUI_RECT * pr1);
 int     WM__IsAncestor              (WM_HWIN hChild, WM_HWIN hParent);
 int     WM__IsAncestorOrSelf        (WM_HWIN hChild, WM_HWIN hParent);
 int     WM__IsChild                 (WM_HWIN hWin, WM_HWIN hParent);
@@ -212,7 +206,6 @@ int     WM__IsEnabled               (WM_HWIN hWin);
 int     WM__IsInModalArea           (WM_HWIN hWin);
 int     WM__IsInWindow              (WM_Obj * pWin, int x, int y);
 int     WM__IsWindow                (WM_HWIN hWin);
-void    WM__LeaveIVRSearch          (void);
 void    WM__MoveTo                  (WM_HWIN hWin, int x, int y);
 void    WM__MoveWindow              (WM_HWIN hWin, int dx, int dy);
 void    WM__NotifyVisChanged        (WM_HWIN hWin, GUI_RECT * pRect);

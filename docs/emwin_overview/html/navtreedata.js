@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "SEGGER emWin graphics library 6.26.0", "index.html", [
+  [ "SEGGER emWin graphics library 6.32.0", "index.html", [
     [ "General Description", "index.html#section_emwin_general", [
       [ "emWin Package Structure", "index.html#group_emwin_package_structure", null ],
       [ "Supported Display Drivers", "index.html#group_emwin_display_drivers", null ]

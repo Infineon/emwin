@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2022  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V6.26 - Graphical user interface for embedded applications **
+** emWin V6.32 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,11 +33,10 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
-                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2009-06-12 - 2022-07-27
+SUA period:               2009-06-12 - 2023-07-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : WM.h
@@ -454,6 +453,8 @@ typedef struct {
 #define WM_NOTIFICATION_OVERLAP_LEFT_ENTERED     19      // This notification message will be sent when the left overlap area of a widget was entered.
 #define WM_NOTIFICATION_OVERLAP_RIGHT_ENTERED    20      // This notification message will be sent when the right overlap area of a widget was entered.
 #define WM_NOTIFICATION_OVERLAP_RELEASED         21      // This notification message will be sent when the overlap area of a widget was entered and has been released.
+#define WM_NOTIFICATION_STARTED                  22      // This notification message will be sent when a widget has been started.
+#define WM_NOTIFICATION_STOPPED                  23      // This notification message will be sent when a widget has been stopped.
 
 /* not documented */
 #define WM_NOTIFICATION_MOTION_STOPPED           11
@@ -707,7 +708,6 @@ WM_HMEM WM_MOTION__CreateContext(void);
 void    WM_MOTION__DeleteContext(WM_HMEM hContext);
 WM_HMEM WM_MOTION__GetContext   (WM_HWIN hWin);
 void    WM_MOTION__SetContext   (WM_HWIN hWin, WM_HMEM hContext);
-void    WM_MOTION__Stop         (WM_HWIN hWin);
 
 /* Motion support, private function(s) */
 void     WM__SetMotionCallback (void(* cbMotion) (GUI_PID_STATE * pState, void * p));
@@ -850,6 +850,8 @@ WM_HWIN   WM_GetPrevSibling          (WM_HWIN hWin);
 int       WM_GetId                   (WM_HWIN hWin);
 WM_HWIN   WM_GetScrollbarV           (WM_HWIN hWin);
 WM_HWIN   WM_GetScrollbarH           (WM_HWIN hWin);
+WM_HWIN   WM_GetScrollerV            (WM_HWIN hWin);
+WM_HWIN   WM_GetScrollerH            (WM_HWIN hWin);
 WM_HWIN   WM_GetScrollPartner        (WM_HWIN hWin);
 WM_HWIN   WM_GetClientWindow         (WM_HWIN hObj);
 GUI_COLOR WM_GetBkColor              (WM_HWIN hObj);
@@ -925,6 +927,7 @@ WM_HWIN   WM_GetDialogItem        (WM_HWIN hWin, int Id);
 void      WM_EnableWindow         (WM_HWIN hWin);
 void      WM_DisableWindow        (WM_HWIN hWin);
 void      WM_GetScrollState       (WM_HWIN hObj, WM_SCROLL_STATE * pScrollState);
+WM_HWIN   WM_GetChild             (WM_HWIN hWin, int Id);
 
 /*********************************************************************
 *

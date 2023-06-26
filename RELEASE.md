@@ -1,4 +1,4 @@
-# SEGGER emWin Graphics Library 6.26.0
+# SEGGER emWin Graphics Library 6.32.0
  
 ### What's Included?
 
@@ -7,7 +7,7 @@ For a complete description of the emWin Middleware, refer to [README.md](./READM
 The revision history of the emWin Middleware is available
 at [API Reference Guide Changelog](https://infineon.github.io/emwin/emwin_overview/html/index.html#group_emwin_changelog).
 New in this release:
-* Updated the emWin middleware to version 6.26.0
+* Updated the emWin middleware to version 6.32.0
 * Updated documentation
 
 
@@ -16,12 +16,12 @@ This version of the emWin Middleware was validated for compatibility with the fo
 
 | Software and Tools                                      | Version    |
 | :---                                                    | :----:     |
-| ModusToolbox&trade; Software Environment                | 2.4        |
+| ModusToolbox&trade; Software Environment                | 3.0        |
 | CAT1 Peripheral Driver Library (PDL)                    | 2.4.0      |
-| Segger AppWizard                                        | 1.30_6.26b |
-| abstraction-rtos                                        | 1.5.0      |
+| Segger AppWizard                                        | 1.38.6.32  |
+| abstraction-rtos                                        | 1.7.1      |
 | GCC Compiler                                            | 10.3.1     |
-| IAR Compiler                                            | 8.32       |
+| IAR Compiler                                            | 8.42.1     |
 | ARM Compiler 6                                          | 6.13       |
 | FreeRTOS                                                | 10.4.302   |
 
@@ -36,4 +36,4 @@ The following resources contain more information:
 * [Infineon](https://www.infineon.com)
 
 ---
-© 2019-2022, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
+© 2019-2023, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.

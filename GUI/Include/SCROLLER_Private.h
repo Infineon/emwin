@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2021  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2022  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V6.26 - Graphical user interface for embedded applications **
+** emWin V6.32 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -33,11 +33,10 @@ License number:           GUI-00319
 License model:            Cypress Services and License Agreement, signed June 9th/10th, 2009
                           and Amendment Number One, signed June 28th, 2019 and July 2nd, 2019
                           and Amendment Number Two, signed September 13th, 2021 and September 18th, 2021
-                          and Amendment Number Three, signed May 2nd, 2022 and May 5th, 2022
 Licensed platform:        Any Cypress platform (Initial targets are: PSoC3, PSoC5)
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2009-06-12 - 2022-07-27
+SUA period:               2009-06-12 - 2023-07-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : SCROLLER_Private.h
@@ -78,6 +77,7 @@ Purpose     : SCROLLER internal header file
 #define SCROLLER_SF_TIMER_RESCHEDULE            (1 << 10)                // If inactive timer has run out, but fading was not done, so the timer had to be rescheduled.
 #define SCROLLER_SF_START_TIMER_ON_ANIM_END     (1 << 11)                // If flag is set, the inactive timer is immediately started when the fading animation has finished.
 #define SCROLLER_SF_NO_INACTIVE_TIMER           (1 << 12)                // Inactive timer will not be started.
+#define SCROLLER_SF_OVERRIDE_RECT               (1 << 13)                // Override the content rectangle to determine the SCROLLER size.
 //
 // Private messages
 //
@@ -214,9 +214,10 @@ typedef struct {
   // General functions
   //
   int             (* pfParentMsgHandler)   (WM_MESSAGE * pMsg);
-  void            (* pfAttachToWindow)     (WM_HWIN hScroller, WM_HWIN hNewParent);
+  void            (* pfAttachToWindow)     (SCROLLER_Handle hScroller, WM_HWIN hNewParent);
   void            (* pfSetActive)          (WM_HWIN hParent, U8 Vertical);
   void            (* pfResizeScrollers)    (WM_HWIN hParent);
+  void            (* pfHideScroller)       (SCROLLER_Handle hScroller);
   //
   // Vertical scrollstate conversion
   //
@@ -251,11 +252,11 @@ typedef struct {
   int                  aPeriod    [4];
   GUI_ANIM_GETPOS_FUNC apfAnimEase[2];
   U8                   aAlign     [2];
-  int                  AlignOffset;
-  int                  Size;
-  int                  Spacing;
-  int                  Radius;
-  int                  ThumbSizeMin;
+  I16                  AlignOffset;
+  I16                  Size;
+  I16                  Spacing;
+  I16                  Radius;
+  I16                  ThumbSizeMin;
 } SCROLLER_PROPS;
 
 struct SCROLLER_Obj {
@@ -267,13 +268,13 @@ struct SCROLLER_Obj {
   int                      PageSize;          // In pixels for H and V!
   int                      Overlap;           // Overlapping distance in px (cached from parent widget)
   GUI_TIMER_HANDLE         hTimerInactive;
-  GUI_TIMER_MESSAGE      * pTimerMsg;
+  GUI_HMEM                 hTimerMsg;         // Copy of GUI_TIMER_MESSAGE if inactive timer needs to be rescheduled.
   SCROLLER_ANIM_DATA       AnimFade;          // Animation handles and data for fading animation
   SCROLLER_ANIM_DATA       AnimScroll;        // Animation handles and data for scrolling animation (when scroller is moved by touching)
   GUI_POINT                TouchPos;
   SCROLLER_WIDGET_API      WidgetAPI;
-  int                      ClientRectOffset;  // Offset in px that is subtracted from the client rectangle during thumb rectangle calculation.
-  U16                      Mul;               // Multiplicator to be used for scroll state calculations.
+  GUI_HMEM                 hCustomRect;       // Copy of rectangle set with SCROLLER_SetContentRect()
+  I16                      ClientRectOffset;  // Offset in px that is subtracted from the client rectangle during thumb rectangle calculation.
   U16                      Flags;
 };
 

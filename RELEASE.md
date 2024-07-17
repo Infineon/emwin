@@ -1,4 +1,4 @@
-# SEGGER emWin Graphics Library 6.32.0
+# SEGGER emWin Graphics Library 6.32.1
  
 ### What's Included?
 
@@ -7,7 +7,7 @@ For a complete description of the emWin Middleware, refer to [README.md](./READM
 The revision history of the emWin Middleware is available
 at [API Reference Guide Changelog](https://infineon.github.io/emwin/emwin_overview/html/index.html#group_emwin_changelog).
 New in this release:
-* Updated the emWin middleware to version 6.32.0
+* Fix issue with softfp ARM libraries
 * Updated documentation
 
 
@@ -36,4 +36,4 @@ The following resources contain more information:
 * [Infineon](https://www.infineon.com)
 
 ---
-© 2019-2023, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
+© 2019-2024, Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
